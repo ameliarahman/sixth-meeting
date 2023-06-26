@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Detail Mahasiswa</title>
+</head>
+<body>
+  <h1>Detail Mahasiswa</h1>
+  <% if (mahasiswa) { %>
+    <p>Name: <%= mahasiswa.name %></p>
+    <p>NIM: <%= mahasiswa.nim %></p>
+    <p>Address: <%= mahasiswa.address %></p>
+  <% } else { %>
+    <p>Mahasiswa not found.</p>
+  <% } %>
+</body>
+</html>
