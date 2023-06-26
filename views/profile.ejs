@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Profile</title>
+</head>
+<body>
+  <h1>Profile</h1>
+  <ul>
+    <% mahasiswa.forEach(function(mhs) { %>
+      <li>
+        <p>Nama: <a href="/mahasiswa/profile/<%= mhs.id %>"><%= mhs.name %></a></p>
+        <p>NIM: <%= mhs.nim %></p>
+      </li>
+    <% }); %>
+  </ul>
+</body>
+</html>
