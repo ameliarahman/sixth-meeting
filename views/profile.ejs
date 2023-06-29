@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Profile</title>
+</head>
+<body>
+  <h1>Profile</h1>
+  <% for (let index = 0; index < mahasiswa.length; index++) { %>
+    <% const mhs = mahasiswa[index]; %>
+    <ul>
+      <li>
+        <p>Nama: <%= mhs.name %></p>
+        <p>NIM: <%= mhs.nim %></p>
+        <p>Alamat: <%= mhs.address %></p>
+      </li>
+    </ul>
+  <% } %>
+</body>
+</html>
