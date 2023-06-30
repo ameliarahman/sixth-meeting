@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 8000;
+const port = 3000;
 const mysql = require('mysql');
 
 // Membuat koneksi ke database
@@ -141,8 +141,5 @@ app.delete('/api/mahasiswa/:id', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });
-
-
-
