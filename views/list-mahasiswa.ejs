@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>List Mahasiswa</title>
+</head>
+<body>
+  <h1>Halaman List Mahasiswa</h1>
+  <ul>
+    <% mahasiswa.forEach(mhs => { %>
+      <li>
+        <p>Nama: <%= mhs.name %></p>
+        <p>NIM: <%= mhs.nim %></p>
+        <p>Alamat: <%= mhs.address %></p>
+        <form action="/mahasiswa/delete/<%= mhs.id %>" method="POST">
+          <button type="submit">Hapus</button>
+        </form>
+        <form action="/mahasiswa/update/<%= mhs.id %>" method="POST">
+            <input type="hidden" name="_method" value="PUT">
+            <button type="submit">Edit</button>
+          </form>
+      </li>
+    <% }); %>
+  </ul>
+
+  <h2>Tambah Data Mahasiswa</h2>
+  <form action="/mahasiswa/insert" method="POST">
+    <input type="text" name="name" placeholder="Nama" required>
+    <input type="text" name="nim" placeholder="NIM" required>
+    <input type="text" name="address" placeholder="Alamat" required>
+    <button type="submit">Tambah</button>
+  </form>
+</body>
+</html>
