@@ -1,58 +1,54 @@
-const express = require('express')
-const app = express()
-const port = 3001
-const user = require('./user');
-const bodyParser = require('body-parser')
-app.use(bodyParser.json())
+const express = require('express');
+const app = express();
+const port = 3000;
 
-app.get('/', (req, res) => {
-    res.send("Hello World from API from GET")
-})
+app.use(express.json());
 
-// METHOD GET
-app.get('/api/v1/users', (req, res) => {
-    console.log(req.query, 'THIS IS FROM REQUEST QUERY???')
-    const result = user.getAllUser(req.query)
-    res.send({
-        data: result.data
-    });
-})
+let mahasiswas = require('./data.json');
 
-// METHOD GET untuk certain id
-app.get('/api/v1/users/:id', (req, res) => {
-    const result = user.getUserById(req.params.id)
-    res.send({
-        data: result
-    })
-})
+app.get('/mahasiswas', (req, res) => {
+  res.json(mahasiswas);
+});
 
+app.get('/mahasiswas/:id', (req, res) => {
+  const id = req.params.id;
+  const mahasiswa = mahasiswas.find((m) => m.id === id);
 
-// METHOD untuk insert data
-app.post('/api/v1/users', (req, res) => {
-    const result = user.insertNewData(req.body)
-    res.send({
-        data: result
-    });
-})
+  if (mahasiswa) {
+    res.json(mahasiswa);
+  } else {
+    res.status(404).json({ error: 'Mahasiswa tidak ditemukan' });
+  }
+});
 
-app.put('/api/v1/users/:id', (req, res) => {
-    const result = user.updateData(req.params.id, req.body)
-    res.send({
-        data: result
-    });
-})
+app.post('/mahasiswas', (req, res) => {
+  const newMahasiswa = req.body;
+  mahasiswas.push(newMahasiswa);
+  res.status(201).json(newMahasiswa);
+});
 
-app.delete('/api/v1/users/:id', (req, res) => {
-    const result = user.deleteData(req.params.id)
-    res.send({
-        data: result
-    });
-})
+app.put('/mahasiswas/:id', (req, res) => {
+  const id = req.params.id;
+  const updatedMahasiswa = req.body;
 
-// app.put('/', (req, res) => {
-//     res.send("Hello World from API from PUT")
-// })
+  mahasiswas = mahasiswas.map((m) => {
+    if (m.id === id) {
+      return { ...m, ...updatedMahasiswa };
+    }
+    return m;
+  });
+
+  res.json(updatedMahasiswa);
+});
+
+app.delete('/mahasiswas/:id', (req, res) => {
+  const id = req.params.id;
+
+  mahasiswas = mahasiswas.filter((m) => m.id !== id);
+
+  res.sendStatus(204);
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`API server running on port ${port}`);
+});
