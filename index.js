@@ -1,58 +1,96 @@
-const express = require('express')
-const app = express()
-const port = 3001
-const user = require('./user');
-const bodyParser = require('body-parser')
-app.use(bodyParser.json())
+const express = require('express');
+const app = express();
+const fs = require('fs');
+const PORT = 3000;
+const mahasiswa = require('./mahasiswa.js');
 
+app.set('view engine', 'ejs');
+
+// Middleware untuk parsing body request
+app.use(express.urlencoded({ extended: true }));
+
+// Menampilkan halaman utama dengan menu
 app.get('/', (req, res) => {
-    res.send("Hello World from API from GET")
-})
+    res.render('index');
+});
 
-// METHOD GET
-app.get('/api/v1/users', (req, res) => {
-    console.log(req.query, 'THIS IS FROM REQUEST QUERY???')
-    const result = user.getAllUser(req.query)
-    res.send({
-        data: result.data
+// Menampilkan halaman profil mahasiswa
+app.get('/profile', (req, res) => {
+    // Ganti dengan data mahasiswa yang sesuai
+    const mahasiswa = {
+        nama: "M. Farhan",
+        alamat: "Jambi",
+        nim: "M010002"
+    };
+    res.render('profile', { mahasiswa });
+});
+
+
+// Menampilkan halaman daftar mahasiswa dari file JSON
+app.get('/list-mahasiswa', (req, res) => {
+    fs.readFile('mahasiswa.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+            res.render('error');
+        } else {
+            const mahasiswa = JSON.parse(data).data;
+            res.render('list-mahasiswa', { mahasiswa });
+        }
     });
-})
+});
 
-// METHOD GET untuk certain id
-app.get('/api/v1/users/:id', (req, res) => {
-    const result = user.getUserById(req.params.id)
-    res.send({
-        data: result
-    })
-})
+app.use(express.json());
 
-
-// METHOD untuk insert data
-app.post('/api/v1/users', (req, res) => {
-    const result = user.insertNewData(req.body)
-    res.send({
-        data: result
+// Mendapatkan semua data mahasiswa
+app.get('/mahasiswa', (req, res) => {
+    fs.readFile('mahasiswa.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+            const mahasiswa = JSON.parse(data).data;
+            res.json(mahasiswa);
+        }
     });
-})
+});
 
-app.put('/api/v1/users/:id', (req, res) => {
-    const result = user.updateData(req.params.id, req.body)
-    res.send({
-        data: result
+// Mendapatkan data mahasiswa berdasarkan ID
+app.get('/mahasiswa/:id', (req, res) => {
+    const id = req.params.id;
+    fs.readFile('mahasiswa.json', 'utf8', (err, data) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+            const mahasiswa = JSON.parse(data).data;
+            const result = mahasiswa.find((mhs) => mhs.id === id);
+            if (result) {
+                res.json(result);
+            } else {
+                res.status(404).json({ error: 'Mahasiswa not found' });
+            }
+        }
     });
-})
+});
 
-app.delete('/api/v1/users/:id', (req, res) => {
-    const result = user.deleteData(req.params.id)
-    res.send({
-        data: result
-    });
-})
+app.get('/mahasiswa/:nim', (req, res) => {
+    const nim = req.params.nim;
+    const mahasiswaByNim = mahasiswa.getMahasiswaByNim(nim);
 
-// app.put('/', (req, res) => {
-//     res.send("Hello World from API from PUT")
-// })
+    // Mengirim data sebagai respons JSON
+    res.json(mahasiswaByNim);
+});
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+// Contoh penggunaan getAllMahasiswa
+const allMahasiswa = mahasiswa.getAllMahasiswa();
+console.log(allMahasiswa);
+
+// Contoh penggunaan getMahasiswaByNim
+const nim = 'M010002';
+const mahasiswaByNim = mahasiswa.getMahasiswaByNim(nim);
+console.log(mahasiswaByNim);
+
+
+app.listen(PORT, () => {
+    console.log(`Server berjalan pada http://localhost:${PORT}`);
+});
