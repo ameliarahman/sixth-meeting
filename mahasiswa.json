@@ -1,0 +1,26 @@
+{
+    "data": [{
+        "id": "clj2k4u62021l0872l5005sgr",
+        "name": "M. Asror",
+        "nim": "M010001",
+        "address": "Madiun"
+    },
+    {
+        "id": "clj2kasoz028b0872zqir86qr",
+        "name": "M. Farhan",
+        "nim": "M010002",
+        "address": "Jambi"
+    },
+    {
+        "id": "clj2k7jq4025r0872ka031aam",
+        "name": "Laili AR",
+        "nim": "M010003",
+        "address": "Magetan"
+    },
+    {
+        "id": "ckacmayji9qmx33jmns1",
+        "name": "Azzahra Kareena",
+        "nim": "M010004",
+        "address": "Madiun"
+    }]
+}
