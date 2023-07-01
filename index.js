@@ -1,58 +1,71 @@
 const express = require('express')
 const app = express()
-const port = 3001
-const user = require('./user');
+const port = 3000
 const bodyParser = require('body-parser')
+const mahasiswa = require('./mahasiswa')
+
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 app.get('/', (req, res) => {
     res.send("Hello World from API from GET")
 })
 
-// METHOD GET
-app.get('/api/v1/users', (req, res) => {
-    console.log(req.query, 'THIS IS FROM REQUEST QUERY???')
-    const result = user.getAllUser(req.query)
-    res.send({
-        data: result.data
-    });
+app.get('/api/data', (req, res) => {
+    const allData = data.getAllData();
+    res.json(allData);
 })
 
 // METHOD GET untuk certain id
-app.get('/api/v1/users/:id', (req, res) => {
-    const result = user.getUserById(req.params.id)
-    res.send({
-        data: result
-    })
-})
+app.get('/api/data/:id', (req, res) => {
+    const id = req.params.id;
+    const item = data.getOneData(id);
+  
+    if (item) {
+      res.json(item);
+    } else {
+      res.status(404).json({ message: 'Data not found.' });
+    }
+  });
 
 
-// METHOD untuk insert data
-app.post('/api/v1/users', (req, res) => {
-    const result = user.insertNewData(req.body)
-    res.send({
-        data: result
-    });
-})
-
-app.put('/api/v1/users/:id', (req, res) => {
-    const result = user.updateData(req.params.id, req.body)
-    res.send({
-        data: result
-    });
-})
-
-app.delete('/api/v1/users/:id', (req, res) => {
-    const result = user.deleteData(req.params.id)
-    res.send({
-        data: result
-    });
-})
-
+// Add Data
+app.post('/api/data', (req, res) => {
+    const newItem = req.body;
+    data.addData(newItem);
+    res.status(201).json({ message: 'Data added successfully.' });
+  });
+  
+  // Update Data
+  app.put('/api/data/:id', (req, res) => {
+    const id = req.params.id;
+    const updatedItem = req.body;
+  
+    const success = data.updateData(id, updatedItem);
+  
+    if (success) {
+      res.json({ message: 'Data updated successfully.' });
+    } else {
+      res.status(404).json({ message: 'Data not found.' });
+    }
+  });
+  
+  // Delete Data
+  app.delete('/api/data/:id', (req, res) => {
+    const id = req.params.id;
+  
+    const success = data.deleteData(id);
+  
+    if (success) {
+      res.json({ message: 'Data deleted successfully.' });
+    } else {
+      res.status(404).json({ message: 'Data not found.' });
+    }
+  });
 // app.put('/', (req, res) => {
 //     res.send("Hello World from API from PUT")
 // })
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Running on ${port}`)
 })
