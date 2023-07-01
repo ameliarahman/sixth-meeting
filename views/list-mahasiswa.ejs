@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>List Mahasiswa</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <style>
+      body {
+        background-color: #f8f9fa;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      h1,
+      h2 {
+        color: #333;
+        text-align: center;
+      }
+
+      .btn-primary,
+      .btn-danger,
+      .btn-success {
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-primary:hover,
+      .btn-danger:hover,
+      .btn-success:hover {
+        background-color: #333;
+      }
+
+      .table {
+        background-color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center">List Mahasiswa</h1>
+      <br />
+      <button class="btn btn-primary">Tambah Data</button><br /><br />
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nama</th>
+            <th>NIM</th>
+            <th>Alamat</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% mahasiswa.forEach(mhs => { %>
+          <tr>
+            <td><%= mhs.name %></td>
+            <td><%= mhs.nim %></td>
+            <td><%= mhs.address %></td>
+            <td>
+              <div class="d-inline-block">
+                <form
+                  action="/mahasiswa/delete/<%= mhs.id %>"
+                  method="POST"
+                  class="d-inline"
+                >
+                  <button type="submit" class="btn btn-danger">Hapus</button>
+                </form>
+                <form
+                  action="/mahasiswa/update/<%= mhs.id %>"
+                  method="POST"
+                  class="d-inline"
+                >
+                  <input type="hidden" name="_method" value="PUT" />
+                  <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+
+      <h2 class="text-center mt-5">Tambah Mahasiswa</h2>
+      <form action="/mahasiswa/insert" method="POST" class="my-4">
+        <input
+          type="text"
+          class="form-control mb-3"
+          name="name"
+          placeholder="Nama"
+          required
+        />
+        <input
+          type="text"
+          class="form-control mb-3"
+          name="nim"
+          placeholder="NIM"
+          required
+        />
+        <input
+          type="text"
+          class="form-control mb-3"
+          name="address"
+          placeholder="Alamat"
+          required
+        />
+        <button type="submit" class="btn btn-success">Tambah</button>
+      </form>
+    </div>
+  </body>
+</html>
