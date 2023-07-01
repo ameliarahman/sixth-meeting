@@ -1,71 +1,28 @@
-const express = require('express')
-const app = express()
-const port = 3000
-const bodyParser = require('body-parser')
-const mahasiswa = require('./mahasiswa')
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const dataMahasiswa = require('./data-mahasiswa.json');
 
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.send("Hello World from API from GET")
-})
+    res.render('index');
+});
 
-app.get('/api/data', (req, res) => {
-    const allData = data.getAllData();
-    res.json(allData);
-})
+app.get('/profile', (req, res) => {
+    const profile = {
+        nama: 'Nama Mahasiswa',
+        nim: 'NIM Mahasiswa'
+    };
+    res.render('profile', profile);
+});
 
-// METHOD GET untuk certain id
-app.get('/api/data/:id', (req, res) => {
-    const id = req.params.id;
-    const item = data.getOneData(id);
-  
-    if (item) {
-      res.json(item);
-    } else {
-      res.status(404).json({ message: 'Data not found.' });
-    }
-  });
+app.get('/list-mahasiswa', (req, res) => {
+    res.render('list-mahasiswa', { mahasiswa: dataMahasiswa });
+});
 
-
-// Add Data
-app.post('/api/data', (req, res) => {
-    const newItem = req.body;
-    data.addData(newItem);
-    res.status(201).json({ message: 'Data added successfully.' });
-  });
-  
-  // Update Data
-  app.put('/api/data/:id', (req, res) => {
-    const id = req.params.id;
-    const updatedItem = req.body;
-  
-    const success = data.updateData(id, updatedItem);
-  
-    if (success) {
-      res.json({ message: 'Data updated successfully.' });
-    } else {
-      res.status(404).json({ message: 'Data not found.' });
-    }
-  });
-  
-  // Delete Data
-  app.delete('/api/data/:id', (req, res) => {
-    const id = req.params.id;
-  
-    const success = data.deleteData(id);
-  
-    if (success) {
-      res.json({ message: 'Data deleted successfully.' });
-    } else {
-      res.status(404).json({ message: 'Data not found.' });
-    }
-  });
-// app.put('/', (req, res) => {
-//     res.send("Hello World from API from PUT")
-// })
-
-app.listen(port, () => {
-  console.log(`Running on ${port}`)
-})
+app.listen(3000, () => {
+    console.log('Server started on port 3000');
+});

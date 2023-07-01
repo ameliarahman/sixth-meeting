@@ -21,9 +21,9 @@ connection.connect((error) => {
 
 // Fungsi untuk menambahkan data mahasiswa ke database
 function insertMahasiswa(mahasiswa) {
-  const { name, nim, address } = mahasiswa;
-  const query = `INSERT INTO mahasiswa (name, nim, address) VALUES (?, ?, ?)`;
-  connection.query(query, [name, nim, address], (error, results) => {
+  const { name, nim } = mahasiswa;
+  const query = `INSERT INTO mahasiswa (name, nim) VALUES (?, ?, ?)`;
+  connection.query(query, [name, nim], (error, results) => {
     if (error) throw error;
     console.log('Data mahasiswa berhasil ditambahkan');
   });
@@ -31,9 +31,9 @@ function insertMahasiswa(mahasiswa) {
 
 // Fungsi untuk update data mahasiswa berdasarkan ID
 function updateMahasiswa(id, updatedMahasiswa) {
-  const { name, nim, address } = updatedMahasiswa;
-  const query = `UPDATE mahasiswa SET name = ?, nim = ?, address = ? WHERE id = ?`;
-  connection.query(query, [name, nim, address, id], (error, results) => {
+  const { name, nim} = updatedMahasiswa;
+  const query = `UPDATE mahasiswa SET name = ?, nim = ? WHERE id = ?`;
+  connection.query(query, [name, nim, id], (error, results) => {
     if (error) throw error;
     console.log('Data mahasiswa berhasil diperbarui');
   });
