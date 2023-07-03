@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>List Mahasiswa</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            margin-top: 30px;
+            text-align: center;
+            color: #343a40;
+        }
+
+        table {
+            margin-top: 30px;
+        }
+
+        th {
+            background-color: #343a40;
+            color: #fff;
+        }
+
+        td {
+            background-color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>List Mahasiswa</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAMA</th>
+                    <th>NIM</th>
+                    <th>ADDRESS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% mahasiswa.forEach(mhs => { %>
+                <tr>
+                    <td><%= mhs.id %></td>
+                    <td><%= mhs.name %></td>
+                    <td><%= mhs.nim %></td>
+                    <td><%= mhs.address %></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
