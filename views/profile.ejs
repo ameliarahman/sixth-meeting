@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        h1 {
+            margin-top: 30px;
+            text-align: center;
+            color: #343a40;
+        }
+
+        p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Halaman Profile</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>NAMA</th>
+                    <th>NIM</th>
+                    <th>ADDRESS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><%= mahasiswa.id %></td>
+                    <td><%= mahasiswa.nama %></td>
+                    <td><%= mahasiswa.nim %></td>
+                    <td><%= mahasiswa.address %></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>
