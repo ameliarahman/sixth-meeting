@@ -1,58 +1,100 @@
-const express = require('express')
-const app = express()
-const port = 3001
-const user = require('./user');
-const bodyParser = require('body-parser')
-app.use(bodyParser.json())
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const data = require('./data.json');
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.set('view engine', 'ejs');
+
+// Menampilkan halaman Menu
 app.get('/', (req, res) => {
-    res.send("Hello World from API from GET")
-})
+  res.render('menu');
+});
 
-// METHOD GET
-app.get('/api/v1/users', (req, res) => {
-    console.log(req.query, 'THIS IS FROM REQUEST QUERY???')
-    const result = user.getAllUser(req.query)
-    res.send({
-        data: result.data
-    });
-})
+// Menampilkan halaman profile
+app.get("/profile", (req, res) => {
+  const dataMahasiswa = [
+    {
+      name: "Fauzi Ihsan Anshori",
+      nim: "V3922021",
+      address: "Karanganyar",
+    },
+  ];
+  res.render("profile", { mahasiswa: dataMahasiswa });
+});
 
-// METHOD GET untuk certain id
-app.get('/api/v1/users/:id', (req, res) => {
-    const result = user.getUserById(req.params.id)
-    res.send({
-        data: result
-    })
-})
+// Menampilkan halaman List Mahasiswa
+app.get('/list', (req, res) => {
+  res.render('list', { mahasiswas: data.data });
+});
 
+//Get All
+app.get('/api/mahasiswa', (req, res) => {
+  res.json(data);
+});
 
-// METHOD untuk insert data
-app.post('/api/v1/users', (req, res) => {
-    const result = user.insertNewData(req.body)
-    res.send({
-        data: result
-    });
-})
+//Get One
+app.get('/api/mahasiswa/:id', (req, res) => {
+  const mahasiswa = data.data.find(mhs => mhs.id === req.params.id);
+  if (mahasiswa) {
+    res.json(mahasiswa);
+  } else {
+    res.status(404).json({ error: 'Mahasiswa not found' });
+  }
+});
 
-app.put('/api/v1/users/:id', (req, res) => {
-    const result = user.updateData(req.params.id, req.body)
-    res.send({
-        data: result
-    });
-})
+//Create
+app.post('/api/mahasiswa', (req, res) => {
+  const newMahasiswa = {
+    id: generateId(),
+    name: req.body.name,
+    nim: req.body.nim,
+    address: req.body.address
+  };
 
-app.delete('/api/v1/users/:id', (req, res) => {
-    const result = user.deleteData(req.params.id)
-    res.send({
-        data: result
-    });
-})
+  data.data.push(newMahasiswa);
+  res.status(201).json(newMahasiswa);
+});
 
-// app.put('/', (req, res) => {
-//     res.send("Hello World from API from PUT")
-// })
+//Update
+app.put('/api/mahasiswa/:id', (req, res) => {
+  const mahasiswa = data.data.find(mhs => mhs.id === req.params.id);
+  if (mahasiswa) {
+    mahasiswa.name = req.body.name;
+    mahasiswa.nim = req.body.nim;
+    mahasiswa.address = req.body.address;
+    res.json(mahasiswa);
+  } else {
+    res.status(404).json({ error: 'Mahasiswa not found' });
+  }
+});
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+//Delete
+app.delete('/api/mahasiswa/:id', (req, res) => {
+  const index = data.data.findIndex(mhs => mhs.id === req.params.id);
+  if (index !== -1) {
+    const deletedMahasiswa = data.data.splice(index, 1)[0];
+    res.json(deletedMahasiswa);
+  } else {
+    res.status(404).json({ error: 'Mahasiswa not found' });
+  }
+});
+
+// Fungsi untuk menghasilkan ID unik
+function generateId() {
+  return (
+    Math.random()
+      .toString(36)
+      .substring(2, 15) +
+    Math.random()
+      .toString(36)
+      .substring(2, 15)
+  );
+}
+
+// Menjalankan server pada port 3000
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
