@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>List Mahasiswa</title>
+
+  <style>
+    /* CSS untuk tabel */
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table th,
+    .table td {
+      padding: 8px;
+      border: 1px solid #dee2e6;
+    }
+
+    .table th {
+      background-color: #e9ecef;
+      text-align: left;
+    }
+
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+
+    /* CSS untuk tombol di dalam tabel */
+    .table .btn {
+      padding: 5px 10px;
+      font-size: 12px;
+    }
+
+    /* CSS saat tombol dihover */
+    .table .btn:hover {
+      opacity: 0.8;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-top: 50px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .btn-primary {
+      background-color: #00ff15;
+      border-color: #02ab49;
+    }
+
+    .btn-primary:hover {
+      background-color: #0069d9;
+      border-color: #0062cc;
+    }
+
+    .table {
+      margin-bottom: 30px;
+    }
+
+    .form-control {
+      margin-bottom: 10px;
+    }
+
+    .btn-success {
+      background-color: #fffb00;
+      border-color: #000000;
+    }
+
+    .btn-success:hover {
+      background-color: #ff0505;
+      border-color: #ededed;
+    }
+
+    .button {
+      display: inline-block;
+      border: none;
+      background-color: #02c520; /* Warna latar belakang */
+      color: white; /* Warna teks */
+      text-align: center;
+      font-size: 16px;
+      padding: 10px 24px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>List Mahasiswa</h1>
+    <button class="btn btn-primary">Tambah Data</button>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>NIM</th>
+          <th>Alamat</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% mahasiswa.forEach(mhs => { %>
+          <tr>
+            <td><%= mhs.name %></td>
+            <td><%= mhs.nim %></td>
+            <td><%= mhs.address %></td>
+            <td>
+              <div class="d-inline-block">
+                <form id="deleteForm-<%= mhs.id %>" action="/mahasiswa/delete/<%= mhs.id %>" method="POST" class="d-inline">
+                  <button type="button" class="btn btn-danger" onclick="confirmDelete('<%= mhs.id %>')">Hapus</button>
+                </form>
+                <form action="/mahasiswa/update/<%= mhs.id %>" method="POST" class="d-inline">
+                  <input type="hidden" name="_method" value="PUT">
+                  <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+              </div>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+
+    <h2 class="text-center mt-5">Tambah Mahasiswa</h2>
+    <form action="/mahasiswa/insert" method="POST" class="my-4">
+      <input type="text" class="form-control" name="name" placeholder="Nama" required>
+      <input type="text" class="form-control" name="nim" placeholder="NIM" required>
+      <input type="text" class="form-control" name="address" placeholder="Alamat" required>
+      <button type="submit" class="btn btn-success">Tambah</button>
+    </form>
+    <a href="/" class="button">Home</a>   
+  </div>
+
+  <script>
+    function confirmDelete(mahasiswaId) {
+      if (confirm("Apakah Anda yakin ingin menghapus data mahasiswa ini?")) {
+        // Submit form untuk menghapus data
+        document.getElementById("deleteForm-" + mahasiswaId).submit();
+      }
+    }
+  </script>
+</body>
+</html>
