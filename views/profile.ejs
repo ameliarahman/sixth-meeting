@@ -4,13 +4,13 @@
   <title>Profile</title>
   <style>
     body {
-      background-color: #56606a;
       font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
       padding: 50px;
     }
 
     h1 {
-      color: #020202;
+      color: #333;
       text-align: center;
       margin-bottom: 30px;
     }
@@ -24,7 +24,8 @@
       border: 1px solid #ddd;
       border-radius: 5px;
       padding: 20px;
-      color: #333; /* Tambahkan properti ini */
+      color: #333;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     li {
@@ -35,6 +36,17 @@
       margin: 0;
       font-weight: bold;
     }
+    .button {
+    display: inline-block;
+    border: none;
+    background-color: #4CAF50; /* Warna latar belakang */
+    color: white; /* Warna teks */
+    text-align: center;
+    font-size: 16px;
+    padding: 10px 24px;
+    cursor: pointer;
+    text-decoration: none;
+   }
   </style>
 </head>
 <body>
@@ -48,6 +60,12 @@
         <p>Alamat: <%= mhs.address %></p>
       </li>
     </ul>
+    <nav>
+      <ul>
+        <li><a href="/" class="button">Home</a>
+        <li><a href="/mahasiswa" class="button">List mahasiswa</a></li>
+      </ul>
+    </nav>
   <% } %>
 </body>
 </html>
